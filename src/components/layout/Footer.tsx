@@ -63,13 +63,15 @@ export default function Footer() {
             {/* Social links */}
             <div className="flex gap-4 pt-2">
               {[
-                { icon: Instagram, label: 'Instagram', href: '#' },
+                { icon: Instagram, label: 'Instagram', href: 'https://www.instagram.com/vividwallsjm' },
                 { icon: Facebook,  label: 'Facebook',  href: '#' },
-                { icon: MessageCircle, label: 'WhatsApp', href: '#' },
+                { icon: MessageCircle, label: 'WhatsApp', href: 'https://wa.me/8764142349' },
               ].map(({ icon: Icon, label, href }) => (
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   aria-label={label}
                   className="w-10 h-10 rounded-btn border border-charcoal flex items-center justify-center text-vivid-red hover:bg-vivid-red hover:text-white hover:border-vivid-red transition-all duration-200"
                 >
@@ -103,17 +105,18 @@ export default function Footer() {
               <h3 className="font-poppins font-bold text-white uppercase tracking-wide text-sm">
                 Contact
               </h3>
+              <p className="font-dmsans text-vivid-red text-xs uppercase tracking-widest font-semibold">Hakeem Bailey</p>
               <div className="flex items-center gap-3 text-warm-gray text-sm">
                 <Phone size={16} className="text-vivid-red flex-shrink-0" />
-                <span>876-555-0192</span>
+                <a href="tel:8764142349" className="hover:text-vivid-red transition-colors">876-414-2349</a>
               </div>
               <div className="flex items-center gap-3 text-warm-gray text-sm">
                 <MessageCircle size={16} className="text-vivid-red flex-shrink-0" />
-                <span>WhatsApp: +1 (876) 555-0192</span>
+                <a href="https://wa.me/8764142349" target="_blank" rel="noopener noreferrer" className="hover:text-vivid-red transition-colors">WhatsApp: 876-414-2349</a>
               </div>
               <div className="flex items-center gap-3 text-warm-gray text-sm">
                 <Mail size={16} className="text-vivid-red flex-shrink-0" />
-                <span>hello@vividwalls.jm</span>
+                <a href="mailto:vividwallsjm@gmail.com" className="hover:text-vivid-red transition-colors">vividwallsjm@gmail.com</a>
               </div>
             </div>
           </div>

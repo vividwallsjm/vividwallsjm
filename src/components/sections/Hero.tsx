@@ -68,7 +68,7 @@ export default function Hero() {
           <motion.div variants={item} className="inline-flex items-center gap-2 mb-6">
             <div className="w-2 h-2 rounded-full bg-vivid-red animate-pulse-red" />
             <span className="font-dmsans text-warm-gray text-sm uppercase tracking-widest">
-              Jamaica&apos;s Premier UV Wall Printing Studio
+              Tired of Plain Walls?
             </span>
           </motion.div>
 
@@ -90,7 +90,7 @@ export default function Hero() {
             variants={item}
             className="font-dmsans text-warm-gray text-xl md:text-2xl mb-10 leading-relaxed max-w-2xl"
           >
-            Direct UV Printing in Jamaica — photo-realistic murals, 3D embossed feature walls, and vibrant brand graphics printed directly on any surface.
+            Bring your walls to life with vibrant, custom-printed designs that reflect your brand, style, or imagination. From cozy living rooms to bold business interiors, our wall printing technology delivers art with precision, speed, and zero mess.
           </motion.p>
 
           {/* CTAs */}

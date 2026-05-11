@@ -2,19 +2,13 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Camera, Upload, CheckCircle, X, Layers3 } from 'lucide-react';
+import { Camera, Upload, CheckCircle, X } from 'lucide-react';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
 import { useToast } from '@/context/ToastContext';
 
-// CUSTOMIZATION POINT: Adjust pricing constants here
-const BASE_PRICE_PER_SQM = 2500; // JMD per square metre
-const COMPLEXITY_MULTIPLIERS = [1.0, 1.4, 1.8]; // Simple, Medium, Complex
-const TEXTURE_SURCHARGE = 0.25; // 25% surcharge for 3D effect
-const PRICE_RANGE = 0.15; // ±15% range
-
-const COMPLEXITY_LABELS = ['Simple / Solid Colours', 'Medium / Patterns', 'Complex / Photo-Realistic'];
+const BASE_PRICE_PER_SQFT = 2300; // JMD per square foot
 
 function formatJMD(value: number) {
   return 'JMD $' + Math.round(value).toLocaleString('en-JM');
@@ -27,11 +21,9 @@ export default function Quote() {
   const { addToast } = useToast();
 
   // Slider state
-  const [width, setWidth] = useState(4);
-  const [height, setHeight] = useState(2.5);
+  const [width, setWidth] = useState(10);
+  const [height, setHeight] = useState(8);
   const [numWalls, setNumWalls] = useState(1);
-  const [complexity, setComplexity] = useState(0);
-  const [is3D, setIs3D] = useState(false);
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -46,12 +38,9 @@ export default function Quote() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Price calculation
+  // Price calculation: length × width × walls × $2,300 JMD per sq ft
   const area = width * height * numWalls;
-  const base = area * BASE_PRICE_PER_SQM * COMPLEXITY_MULTIPLIERS[complexity];
-  const total = base * (1 + (is3D ? TEXTURE_SURCHARGE : 0));
-  const low = total * (1 - PRICE_RANGE);
-  const high = total * (1 + PRICE_RANGE);
+  const total = area * BASE_PRICE_PER_SQFT;
 
   // CUSTOMIZATION POINT: Replace this with a real API call to your backend
   const handleFileUpload = useCallback((file: File) => {
@@ -135,6 +124,62 @@ export default function Quote() {
           </p>
         </div>
 
+        {/* Rates & Packages */}
+        <div className="mb-14">
+          <h3 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-2xl md:text-3xl mb-2">
+            RATES &amp; PACKAGES
+          </h3>
+          <div className="w-12 h-[3px] bg-vivid-red mb-8" />
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            {/* Standard */}
+            <div className="bg-white dark:bg-jet-black rounded-card shadow-card border border-warm-gray dark:border-charcoal p-7 flex flex-col gap-5">
+              <div>
+                <p className="font-dmsans text-vivid-red text-xs uppercase tracking-widest font-semibold mb-1">Standard</p>
+                <p className="font-poppins font-bold text-jet-black dark:text-white text-4xl">$2,000<span className="text-xl font-dmsans font-normal text-charcoal dark:text-warm-gray">.00</span></p>
+                <p className="font-dmsans text-charcoal dark:text-warm-gray text-sm mt-1">per square foot · without white base ink</p>
+              </div>
+              <ul className="space-y-2 flex-1">
+                {[
+                  'All surfaces (incl. outdoor & high moisture)',
+                  'Max 2880 DPI precision',
+                  'Double Armor Sealant (scratch/waterproof)',
+                  '3-Year Ultimate Guarantee',
+                  '1-Day Response',
+                ].map(spec => (
+                  <li key={spec} className="flex items-start gap-3 text-sm font-dmsans text-charcoal dark:text-warm-gray">
+                    <span className="text-vivid-red font-bold mt-0.5">✓</span>
+                    {spec}
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Premium */}
+            <div className="bg-vivid-red rounded-card shadow-red-glow p-7 flex flex-col gap-5">
+              <div>
+                <p className="font-dmsans text-white/80 text-xs uppercase tracking-widest font-semibold mb-1">Premium</p>
+                <p className="font-poppins font-bold text-white text-4xl">$2,300<span className="text-xl font-dmsans font-normal text-white/70">.00</span></p>
+                <p className="font-dmsans text-white/80 text-sm mt-1">per square foot · with white base ink</p>
+              </div>
+              <ul className="space-y-2 flex-1">
+                {[
+                  'All surfaces (incl. outdoor & high moisture)',
+                  'Max 2880 DPI precision',
+                  'Double Armor Sealant (scratch/waterproof)',
+                  '3-Year Ultimate Guarantee',
+                  '1-Day Response',
+                ].map(spec => (
+                  <li key={spec} className="flex items-start gap-3 text-sm font-dmsans text-white/90">
+                    <span className="text-white font-bold mt-0.5">✓</span>
+                    {spec}
+                  </li>
+                ))}
+              </ul>
+              <p className="font-dmsans text-white/70 text-xs">White base ink recommended for dark or coloured surfaces to ensure true colour accuracy.</p>
+            </div>
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
           {/* Pricing simulator */}
           <div className="bg-white dark:bg-jet-black rounded-card shadow-card p-6 md:p-8 space-y-6">
@@ -143,60 +188,20 @@ export default function Quote() {
               Instant Price Estimator
             </h3>
 
-            {sliderRow('Wall Width', width, 1, 20, 0.5, 'm', setWidth)}
-            {sliderRow('Wall Height', height, 1, 10, 0.5, 'm', setHeight)}
+            {sliderRow('Wall Length', width, 1, 100, 1, ' ft', setWidth)}
+            {sliderRow('Wall Height', height, 1, 30, 1, ' ft', setHeight)}
             {sliderRow('Number of Walls', numWalls, 1, 5, 1, '', setNumWalls)}
-
-            {/* Complexity */}
-            <div>
-              <label className="font-dmsans font-medium text-charcoal dark:text-warm-gray text-sm mb-2 block">
-                Design Complexity
-              </label>
-              <div className="grid grid-cols-3 gap-2">
-                {COMPLEXITY_LABELS.map((label, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setComplexity(i)}
-                    className={`py-2 px-2 rounded-btn text-xs font-dmsans font-semibold text-center transition-all duration-200 ${
-                      complexity === i
-                        ? 'bg-vivid-red text-white'
-                        : 'bg-smoke dark:bg-charcoal text-charcoal dark:text-warm-gray hover:border-vivid-red border border-transparent'
-                    }`}
-                  >
-                    {label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* 3D toggle */}
-            <div className="flex items-center justify-between py-3 border-t border-warm-gray dark:border-charcoal">
-              <div className="flex items-center gap-2">
-                <Layers3 size={18} className="text-vivid-red" />
-                <span className="font-dmsans font-medium text-charcoal dark:text-warm-gray text-sm">
-                  Add 3D Embossed Texture (+25%)
-                </span>
-              </div>
-              <button
-                onClick={() => setIs3D(p => !p)}
-                className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${is3D ? 'bg-vivid-red' : 'bg-warm-gray dark:bg-charcoal'}`}
-              >
-                <span
-                  className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white shadow transition-transform duration-300 ${is3D ? 'translate-x-6' : 'translate-x-0'}`}
-                />
-              </button>
-            </div>
 
             {/* Price display */}
             <div className="bg-jet-black rounded-card p-5 text-center">
               <p className="font-dmsans text-warm-gray text-sm mb-1">
-                {area.toFixed(1)} m² · {COMPLEXITY_LABELS[complexity]}{is3D ? ' · 3D Texture' : ''}
+                {area.toFixed(0)} sq ft · {numWalls} wall{numWalls > 1 ? 's' : ''}
               </p>
               <p className="font-poppins font-bold text-vivid-red text-3xl md:text-4xl">
-                {formatJMD(low)} – {formatJMD(high)}
+                {formatJMD(total)}
               </p>
               <p className="font-dmsans text-warm-gray text-xs mt-1">
-                Estimated range · Final price confirmed after site inspection
+                Estimated total · Final price confirmed after site visit
               </p>
             </div>
           </div>

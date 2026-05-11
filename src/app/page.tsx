@@ -1,7 +1,9 @@
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import Hero from '@/components/sections/Hero';
+import Services from '@/components/sections/Services';
 import Technology from '@/components/sections/Technology';
+import Audience from '@/components/sections/Audience';
 import Visualizer from '@/components/sections/Visualizer';
 import Gallery from '@/components/sections/Gallery';
 import Quote from '@/components/sections/Quote';
@@ -15,7 +17,9 @@ export default function Home() {
       <Navbar />
       <main>
         <Hero />
+        <Services />
         <Technology />
+        <Audience />
         <Visualizer />
         <Gallery />
         <Quote />

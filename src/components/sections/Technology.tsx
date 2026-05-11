@@ -65,12 +65,11 @@ const steps = [
 ];
 
 const benefits = [
-  { icon: '🎨', title: 'Vibrant, Permanent Colours', desc: 'UV-cured inks maintain photographic vibrancy for 10+ years without fading.' },
-  { icon: '💧', title: 'Weather & Humidity Resistant', desc: 'Formulated for Jamaica\'s tropical climate — rain, humidity, and sea air won\'t affect it.' },
-  { icon: '🏠', title: 'Prints on Any Surface', desc: 'Plaster, drywall, concrete, wood, glass, brick, ceramic tile — almost any smooth surface.' },
-  { icon: '🌱', title: 'Eco-Friendly UV Inks', desc: 'No VOCs, no solvents, no harmful fumes. Safe for homes, schools, and hospitals.' },
-  { icon: '🚫', title: 'No Wallpaper Needed', desc: 'Printed directly on your existing wall — no peeling, bubbling, or replacement issues.' },
-  { icon: '⚡', title: 'Fast 1–2 Day Installation', desc: 'Most residential projects completed in one day. Minimal disruption to your home or business.' },
+  { icon: '⚡', title: 'Fast Installation', desc: 'Done in hours, not days. Most projects are completed the same day with zero disruption.' },
+  { icon: '✨', title: 'No Mess, No Fumes', desc: 'Completely clean process — no paint, no solvents, no harmful odours. Safe for everyone.' },
+  { icon: '🧱', title: 'Works on Any Surface', desc: 'Brick, wood, concrete, plaster, drywall, ceramic tile — virtually any surface qualifies.' },
+  { icon: '🎨', title: 'Long-Lasting Colour', desc: 'UV-cured inks lock in vibrancy permanently — fade-proof and scratch-resistant for years.' },
+  { icon: '🛠️', title: 'Fully Customizable', desc: 'Your design, your vision. Tailored for residential homes, businesses, and everything in between.' },
 ];
 
 export default function Technology() {
