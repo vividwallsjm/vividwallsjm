@@ -8,7 +8,6 @@ import Visualizer from '@/components/sections/Visualizer';
 import Gallery from '@/components/sections/Gallery';
 import Quote from '@/components/sections/Quote';
 import Simulator from '@/components/sections/Simulator';
-import ChatWidget from '@/components/ChatWidget';
 import WhatsAppButton from '@/components/WhatsAppButton';
 
 export default function Home() {
@@ -26,7 +25,6 @@ export default function Home() {
         <Simulator />
       </main>
       <Footer />
-      <ChatWidget />
       <WhatsAppButton />
     </>
   );

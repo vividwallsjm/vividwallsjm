@@ -25,6 +25,9 @@ export function useCountUp(target: number, duration = 2000) {
           };
 
           requestAnimationFrame(step);
+        } else if (!entries[0].isIntersecting) {
+          started.current = false;
+          setCount(0);
         }
       },
       { threshold: 0.3 }

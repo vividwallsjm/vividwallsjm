@@ -20,10 +20,19 @@ type StyleOption = 'Photo-Realistic' | 'Abstract' | '3D Texture' | 'Branding';
 export default function Quote() {
   const { addToast } = useToast();
 
-  // Slider state
-  const [width, setWidth] = useState(10);
-  const [height, setHeight] = useState(8);
-  const [numWalls, setNumWalls] = useState(1);
+  // Print entry state
+  type PrintEntry = { height: number; length: number; walls: number };
+  const [prints, setPrints] = useState<PrintEntry[]>([{ height: 8, length: 10, walls: 1 }]);
+
+  const updatePrint = (i: number, field: keyof PrintEntry, val: number) =>
+    setPrints(prev => prev.map((p, idx) => idx === i ? { ...p, [field]: val } : p));
+
+  const addPrint = () => {
+    if (prints.length < 4) setPrints(prev => [...prev, { height: 8, length: 10, walls: 1 }]);
+  };
+
+  const removePrint = (i: number) =>
+    setPrints(prev => prev.filter((_, idx) => idx !== i));
 
   // Modal state
   const [modalOpen, setModalOpen] = useState(false);
@@ -38,9 +47,8 @@ export default function Quote() {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Price calculation: length × width × walls × $2,300 JMD per sq ft
-  const area = width * height * numWalls;
-  const total = area * BASE_PRICE_PER_SQFT;
+  const totalArea = prints.reduce((sum, p) => sum + p.height * p.length * p.walls, 0);
+  const total = totalArea * BASE_PRICE_PER_SQFT;
 
   // CUSTOMIZATION POINT: Replace this with a real API call to your backend
   const handleFileUpload = useCallback((file: File) => {
@@ -135,8 +143,7 @@ export default function Quote() {
             <div className="bg-white dark:bg-jet-black rounded-card shadow-card border border-warm-gray dark:border-charcoal p-7 flex flex-col gap-5">
               <div>
                 <p className="font-dmsans text-vivid-red text-xs uppercase tracking-widest font-semibold mb-1">Standard</p>
-                <p className="font-poppins font-bold text-jet-black dark:text-white text-4xl">$2,000<span className="text-xl font-dmsans font-normal text-charcoal dark:text-warm-gray">.00</span></p>
-                <p className="font-dmsans text-charcoal dark:text-warm-gray text-sm mt-1">per square foot · without white base ink</p>
+                <p className="font-dmsans text-charcoal dark:text-warm-gray text-sm mt-1">Without white base ink</p>
               </div>
               <ul className="space-y-2 flex-1">
                 {[
@@ -188,14 +195,44 @@ export default function Quote() {
               Instant Price Estimator
             </h3>
 
-            {sliderRow('Wall Length', width, 1, 100, 1, ' ft', setWidth)}
-            {sliderRow('Wall Height', height, 1, 30, 1, ' ft', setHeight)}
-            {sliderRow('Number of Walls', numWalls, 1, 5, 1, '', setNumWalls)}
+            <div className="space-y-6">
+              {prints.map((p, i) => (
+                <div key={i} className="space-y-4">
+                  {/* Print entry header */}
+                  <div className="flex items-center justify-between">
+                    <span className="font-dmsans font-semibold text-charcoal dark:text-warm-gray text-xs uppercase tracking-widest">
+                      Print {prints.length > 1 ? `#${i + 1}` : 'Size'}
+                    </span>
+                    {prints.length > 1 && (
+                      <button
+                        onClick={() => removePrint(i)}
+                        className="text-warm-gray hover:text-vivid-red text-xs font-dmsans flex items-center gap-1 transition-colors"
+                      >
+                        <X size={12} /> Remove
+                      </button>
+                    )}
+                  </div>
+                  {sliderRow('Mural Height', p.height, 1, 30, 1, ' ft', v => updatePrint(i, 'height', v))}
+                  {sliderRow('Mural Length', p.length, 1, 100, 1, ' ft', v => updatePrint(i, 'length', v))}
+                  {sliderRow('Number of Walls', p.walls, 1, 5, 1, '', v => updatePrint(i, 'walls', v))}
+                  {i < prints.length - 1 && <div className="border-t border-warm-gray/30 dark:border-charcoal" />}
+                </div>
+              ))}
+            </div>
+
+            {prints.length < 4 && (
+              <button
+                onClick={addPrint}
+                className="w-full border border-dashed border-vivid-red/50 hover:border-vivid-red text-vivid-red text-sm font-dmsans font-medium py-2 rounded-btn transition-colors"
+              >
+                + Add another print size
+              </button>
+            )}
 
             {/* Price display */}
             <div className="bg-jet-black rounded-card p-5 text-center">
               <p className="font-dmsans text-warm-gray text-sm mb-1">
-                {area.toFixed(0)} sq ft · {numWalls} wall{numWalls > 1 ? 's' : ''}
+                {totalArea.toFixed(0)} sq ft total · {prints.length} print size{prints.length > 1 ? 's' : ''}
               </p>
               <p className="font-poppins font-bold text-vivid-red text-3xl md:text-4xl">
                 {formatJMD(total)}

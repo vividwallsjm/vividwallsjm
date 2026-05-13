@@ -28,9 +28,9 @@ export default function Footer() {
           {/* Column 1 — Brand */}
           <div className="space-y-5">
             <div>
-              <div className="inline-block bg-white rounded-[6px] px-3 py-2 mb-2">
+              <div className="inline-block mb-2">
                 <Image
-                  src="/logo.jpeg"
+                  src="/logo-transparent.jpg"
                   alt="Vivid Walls"
                   width={160}
                   height={54}

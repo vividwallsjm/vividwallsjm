@@ -90,7 +90,7 @@ export default function Hero() {
             variants={item}
             className="font-dmsans text-warm-gray text-xl md:text-2xl mb-10 leading-relaxed max-w-2xl"
           >
-            Bring your walls to life with vibrant, custom-printed designs that reflect your brand, style, or imagination. From cozy living rooms to bold business interiors, our wall printing technology delivers art with precision, speed, and zero mess.
+            Bring your walls to life with vibrant, custom-printed designs that reflect your brand, style, or imagination.
           </motion.p>
 
           {/* CTAs */}
@@ -116,7 +116,7 @@ export default function Hero() {
             variants={item}
             className="grid grid-cols-1 sm:grid-cols-3 gap-4"
           >
-            <StatCard target={150}  suffix="+"  label="Projects Completed Across Jamaica" />
+            <StatCard target={50}  suffix="+"  label="Projects Completed Across Jamaica" />
             <StatCard target={4200} suffix=" m²" label="Square Metres of Wall Printed" />
             <StatCard target={98}   suffix="+"   label="Happy Clients Island-Wide" />
           </motion.div>

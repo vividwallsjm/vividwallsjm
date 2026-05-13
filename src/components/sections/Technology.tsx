@@ -12,10 +12,9 @@ const steps = [
     icon: '🧹',
     short: 'Cleaning, priming, and sealing the wall surface',
     description:
-      'Our technicians begin with a thorough surface inspection and preparation. The wall is cleaned to remove dust, grease, and contaminants. Rough areas are smoothed, cracks filled, and porous surfaces are sealed with a compatible primer. A properly prepared surface is critical for ink adhesion and print longevity — this step ensures a perfect foundation.',
+      'Our technicians begin with a thorough surface inspection and preparation. The wall is cleaned to remove dust, grease, and contaminants. A properly prepared surface is critical for ink adhesion and print longevity — this step ensures a perfect foundation.',
     bullets: [
       'Deep-cleaning with specialist solutions',
-      'Crack filling and surface smoothing',
       'Primer application for optimal ink adhesion',
       'Final inspection and mock layout alignment',
     ],
