@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Maximize2, Layers, Type, Upload, X } from 'lucide-react';
+import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
+import { Maximize2, Layers, Type, Upload, X, Mail } from 'lucide-react';
+import html2canvas from 'html2canvas';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
@@ -65,10 +66,16 @@ const [is3D, setIs3D] = useState(false);
   const [textOverlay, setTextOverlay] = useState('');
   const [fullscreen, setFullscreen] = useState(false);
   const [uploadedDesign, setUploadedDesign] = useState<string | null>(null);
-  const [fitMode, setFitMode] = useState<'contain' | 'cover'>('contain');
+  const [designWidth, setDesignWidth] = useState(180);
   const [dragging, setDragging] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [sentMsg, setSentMsg] = useState(false);
 
+  const designMotionX = useMotionValue(0);
+  const designMotionY = useMotionValue(0);
+  const previewRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const resizeStartRef = useRef<{ x: number; startWidth: number } | null>(null);
 
   const handleDesignUpload = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -85,6 +92,34 @@ const [is3D, setIs3D] = useState(false);
     if (file) handleDesignUpload(file);
   };
 
+  const handleSaveAndSend = async () => {
+    if (!previewRef.current) return;
+    setSending(true);
+    try {
+      const canvas = await html2canvas(previewRef.current, {
+        useCORS: true,
+        scale: 2,
+        onclone: (_doc, el) => {
+          el.style.transform = 'none';
+          el.style.boxShadow = 'none';
+        },
+      });
+      const link = document.createElement('a');
+      link.download = `vivid-walls-${activeRoom.id}-preview.png`;
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      const subject = encodeURIComponent('My Vivid Walls Design Preview');
+      const body = encodeURIComponent(
+        `Hi Vivid Walls,\n\nPlease find my wall design preview attached.\n\nRoom: ${activeRoom.label}\nDesign: ${uploadedDesign ? 'Custom Upload' : 'None'}\n3D Effect: ${is3D ? 'On' : 'Off'}\n\nI would love to get a quote for this design.\n\nThank you!`
+      );
+      window.open(`mailto:?subject=${subject}&body=${body}`);
+      setSentMsg(true);
+      setTimeout(() => setSentMsg(false), 4000);
+    } finally {
+      setSending(false);
+    }
+  };
+
   const wallStyle = {
     background: activeRoom.photo ? 'transparent' : activeRoom.bg,
     ...(is3D && {
@@ -93,8 +128,9 @@ const [is3D, setIs3D] = useState(false);
     }),
   };
 
-  const WallPreview = ({ height = 'h-80' }: { height?: string }) => (
+  const WallPreview = ({ height = 'h-80', innerRef }: { height?: string; innerRef?: React.RefObject<HTMLDivElement> }) => (
     <div
+      ref={innerRef}
       className={`relative ${height} rounded-card overflow-hidden transition-all duration-500`}
       style={wallStyle}
     >
@@ -304,14 +340,22 @@ const [is3D, setIs3D] = useState(false);
 
           {/* Preview column */}
           <div className="lg:col-span-2 space-y-4">
-            <WallPreview height="h-96 md:h-[480px]" />
-            <div className="flex gap-3">
+            <WallPreview height="h-96 md:h-[480px]" innerRef={previewRef} />
+            <div className="flex gap-3 flex-wrap">
               <Button
                 variant="ghost"
                 size="sm"
                 onClick={() => setFullscreen(true)}
               >
                 <Maximize2 size={16} /> Fullscreen Preview
+              </Button>
+              <Button
+                variant="primary"
+                size="sm"
+                onClick={handleSaveAndSend}
+                disabled={sending}
+              >
+                <Mail size={16} /> {sending ? 'Saving…' : 'Save & Send'}
               </Button>
               <Button
                 variant="secondary"
@@ -321,6 +365,11 @@ const [is3D, setIs3D] = useState(false);
                 Reset
               </Button>
             </div>
+            {sentMsg && (
+              <p className="text-sm font-dmsans text-vivid-red font-medium">
+                Preview saved — attach the downloaded image to the email that just opened.
+              </p>
+            )}
           </div>
         </div>
       </div>
