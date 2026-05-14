@@ -11,36 +11,42 @@ const rooms = [
   {
     id: 'living',
     label: 'Living Room',
+    photo: '/rooms/living-room.jpeg',
     bg: 'linear-gradient(135deg, #d4c4b0 0%, #b8a898 40%, #e8ddd0 100%)',
     floorColor: '#8B7355',
   },
   {
     id: 'bedroom',
     label: 'Bedroom',
+    photo: '/rooms/bedroom.jpeg',
     bg: 'linear-gradient(135deg, #c8d4e8 0%, #a8b8d4 40%, #dce4f0 100%)',
     floorColor: '#5a4a3a',
   },
   {
     id: 'office',
     label: 'Office',
+    photo: '/rooms/office.jpeg',
     bg: 'linear-gradient(135deg, #d8d8d8 0%, #c0c0c0 40%, #e8e8e8 100%)',
     floorColor: '#4a4a4a',
   },
   {
     id: 'restaurant',
     label: 'Restaurant',
+    photo: '/rooms/restaurant.jpeg',
     bg: 'linear-gradient(135deg, #c8b090 0%, #b09070 40%, #d8c0a0 100%)',
     floorColor: '#3a2a1a',
   },
   {
     id: 'hotel',
     label: 'Hotel Lobby',
+    photo: '/rooms/hotel-lobby.jpeg',
     bg: 'linear-gradient(135deg, #e8e4d8 0%, #d4cfc0 40%, #f0ece0 100%)',
     floorColor: '#6a5a4a',
   },
   {
     id: 'retail',
     label: 'Retail',
+    photo: undefined,
     bg: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 40%, #fafafa 100%)',
     floorColor: '#2a2a2a',
   },
@@ -74,7 +80,7 @@ const [is3D, setIs3D] = useState(false);
   };
 
   const wallStyle = {
-    background: activeRoom.bg,
+    background: activeRoom.photo ? 'transparent' : activeRoom.bg,
     ...(is3D && {
       boxShadow: 'inset 0 0 60px rgba(0,0,0,0.3), inset 4px 4px 20px rgba(255,255,255,0.1)',
       transform: 'perspective(800px) rotateY(-2deg)',
@@ -86,6 +92,22 @@ const [is3D, setIs3D] = useState(false);
       className={`relative ${height} rounded-card overflow-hidden transition-all duration-500`}
       style={wallStyle}
     >
+      {/* Room background photo */}
+      <AnimatePresence mode="wait">
+        {activeRoom.photo && (
+          <motion.img
+            key={activeRoom.id}
+            src={activeRoom.photo}
+            alt={`${activeRoom.label} room`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 w-full h-full object-cover"
+          />
+        )}
+      </AnimatePresence>
+
       {/* Uploaded design image */}
       <AnimatePresence>
         {uploadedDesign && (
