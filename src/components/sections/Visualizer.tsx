@@ -51,8 +51,8 @@ const rooms = [
   {
     id: 'retail',
     label: 'Retail',
-    photo: undefined,
-    photoFit: 'cover' as const,
+    photo: '/rooms/retail.jpeg',
+    photoFit: 'contain' as const,
     bg: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 40%, #fafafa 100%)',
     floorColor: '#2a2a2a',
   },
