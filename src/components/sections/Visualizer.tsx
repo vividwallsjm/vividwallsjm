@@ -12,6 +12,7 @@ const rooms = [
     id: 'living',
     label: 'Living Room',
     photo: '/rooms/living-room.jpeg',
+    photoFit: 'cover' as const,
     bg: 'linear-gradient(135deg, #d4c4b0 0%, #b8a898 40%, #e8ddd0 100%)',
     floorColor: '#8B7355',
   },
@@ -19,6 +20,7 @@ const rooms = [
     id: 'bedroom',
     label: 'Bedroom',
     photo: '/rooms/bedroom.jpeg',
+    photoFit: 'contain' as const,
     bg: 'linear-gradient(135deg, #c8d4e8 0%, #a8b8d4 40%, #dce4f0 100%)',
     floorColor: '#5a4a3a',
   },
@@ -26,6 +28,7 @@ const rooms = [
     id: 'office',
     label: 'Office',
     photo: '/rooms/office.jpeg',
+    photoFit: 'cover' as const,
     bg: 'linear-gradient(135deg, #d8d8d8 0%, #c0c0c0 40%, #e8e8e8 100%)',
     floorColor: '#4a4a4a',
   },
@@ -33,6 +36,7 @@ const rooms = [
     id: 'restaurant',
     label: 'Restaurant',
     photo: '/rooms/restaurant.jpeg',
+    photoFit: 'contain' as const,
     bg: 'linear-gradient(135deg, #c8b090 0%, #b09070 40%, #d8c0a0 100%)',
     floorColor: '#3a2a1a',
   },
@@ -40,6 +44,7 @@ const rooms = [
     id: 'hotel',
     label: 'Hotel Lobby',
     photo: '/rooms/hotel-lobby.jpeg',
+    photoFit: 'contain' as const,
     bg: 'linear-gradient(135deg, #e8e4d8 0%, #d4cfc0 40%, #f0ece0 100%)',
     floorColor: '#6a5a4a',
   },
@@ -47,6 +52,7 @@ const rooms = [
     id: 'retail',
     label: 'Retail',
     photo: undefined,
+    photoFit: 'cover' as const,
     bg: 'linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 40%, #fafafa 100%)',
     floorColor: '#2a2a2a',
   },
@@ -103,7 +109,8 @@ const [is3D, setIs3D] = useState(false);
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4 }}
-            className="absolute inset-0 w-full h-full object-cover"
+            className="absolute inset-0 w-full h-full"
+            style={{ objectFit: activeRoom.photoFit }}
           />
         )}
       </AnimatePresence>
