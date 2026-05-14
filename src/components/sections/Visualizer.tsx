@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Maximize2, Layers, Type } from 'lucide-react';
+import { Maximize2, Layers, Type, Upload, X } from 'lucide-react';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Button from '@/components/ui/Button';
 import Modal from '@/components/ui/Modal';
@@ -91,6 +91,26 @@ export default function Visualizer() {
   const [is3D, setIs3D] = useState(false);
   const [textOverlay, setTextOverlay] = useState('');
   const [fullscreen, setFullscreen] = useState(false);
+  const [uploadedDesign, setUploadedDesign] = useState<string | null>(null);
+  const [fitMode, setFitMode] = useState<'contain' | 'cover'>('contain');
+  const [dragging, setDragging] = useState(false);
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleDesignUpload = useCallback((file: File) => {
+    if (!file.type.startsWith('image/')) return;
+    if (file.size > 20 * 1024 * 1024) return;
+    const reader = new FileReader();
+    reader.onload = e => setUploadedDesign(e.target?.result as string);
+    reader.readAsDataURL(file);
+  }, []);
+
+  const onDropDesign = (e: React.DragEvent) => {
+    e.preventDefault();
+    setDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleDesignUpload(file);
+  };
 
   const wallStyle = {
     background: activeRoom.bg,
@@ -105,9 +125,26 @@ export default function Visualizer() {
       className={`relative ${height} rounded-card overflow-hidden transition-all duration-500`}
       style={wallStyle}
     >
-      {/* Design overlay */}
+      {/* Uploaded design image */}
       <AnimatePresence>
-        {activeDesign && (
+        {uploadedDesign && (
+          <motion.img
+            key="uploaded"
+            src={uploadedDesign}
+            alt="Your design on wall"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.93 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.4 }}
+            className="absolute inset-0 w-full h-full"
+            style={{ objectFit: fitMode }}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Design overlay (hidden when custom design is uploaded) */}
+      <AnimatePresence>
+        {activeDesign && !uploadedDesign && (
           <motion.div
             key={activeDesign.id}
             initial={{ opacity: 0 }}
@@ -120,8 +157,8 @@ export default function Visualizer() {
         )}
       </AnimatePresence>
 
-      {/* Pattern symbol */}
-      {activeDesign && (
+      {/* Pattern symbol (hidden when custom design is uploaded) */}
+      {activeDesign && !uploadedDesign && (
         <div className="absolute inset-0 flex items-center justify-center">
           <span
             className="text-white/30 font-poppins font-bold select-none"
@@ -155,9 +192,9 @@ export default function Visualizer() {
       )}
 
       {/* Empty state */}
-      {!activeDesign && !textOverlay && (
+      {!activeDesign && !textOverlay && !uploadedDesign && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/40 font-dmsans text-sm">Select a design below to preview</p>
+          <p className="text-white/40 font-dmsans text-sm">Select a design or upload your own below</p>
         </div>
       )}
     </div>
@@ -232,6 +269,69 @@ export default function Visualizer() {
               </div>
             </div>
 
+            {/* Upload your design */}
+            <div>
+              <h3 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-sm tracking-wide mb-3 flex items-center gap-2">
+                <Upload size={14} /> Upload Your Design
+              </h3>
+              {uploadedDesign ? (
+                <div className="relative rounded-card overflow-hidden bg-white dark:bg-jet-black border border-vivid-red/30">
+                  <img src={uploadedDesign} alt="Uploaded design preview" className="w-full h-24 object-contain" />
+                  <button
+                    onClick={() => setUploadedDesign(null)}
+                    className="absolute top-1.5 right-1.5 bg-jet-black/60 text-white rounded-full p-0.5 hover:bg-vivid-red transition-colors"
+                    aria-label="Remove uploaded design"
+                  >
+                    <X size={13} />
+                  </button>
+                  <div className="flex gap-1 p-1.5 pt-0">
+                    <button
+                      onClick={() => setFitMode('contain')}
+                      className={`flex-1 text-xs py-1 rounded font-dmsans font-medium transition-colors ${fitMode === 'contain' ? 'bg-vivid-red text-white' : 'bg-smoke dark:bg-charcoal text-charcoal dark:text-warm-gray hover:text-vivid-red'}`}
+                    >
+                      Fit
+                    </button>
+                    <button
+                      onClick={() => setFitMode('cover')}
+                      className={`flex-1 text-xs py-1 rounded font-dmsans font-medium transition-colors ${fitMode === 'cover' ? 'bg-vivid-red text-white' : 'bg-smoke dark:bg-charcoal text-charcoal dark:text-warm-gray hover:text-vivid-red'}`}
+                    >
+                      Fill
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  onDragOver={e => { e.preventDefault(); setDragging(true); }}
+                  onDragLeave={() => setDragging(false)}
+                  onDrop={onDropDesign}
+                  onClick={() => fileInputRef.current?.click()}
+                  className={`border-2 border-dashed rounded-card p-5 text-center cursor-pointer transition-all duration-200 ${
+                    dragging
+                      ? 'border-vivid-red bg-vivid-red/5'
+                      : 'border-charcoal/30 dark:border-warm-gray/20 hover:border-vivid-red hover:bg-vivid-red/5'
+                  }`}
+                >
+                  <Upload size={22} className="mx-auto mb-2 text-warm-gray" />
+                  <p className="text-xs font-dmsans text-charcoal dark:text-warm-gray leading-relaxed">
+                    Drop your design here<br />
+                    or <span className="text-vivid-red font-semibold">click to browse</span>
+                  </p>
+                  <p className="text-xs text-warm-gray/70 mt-1.5">JPG, PNG, WEBP · max 20 MB</p>
+                </div>
+              )}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={e => {
+                  const f = e.target.files?.[0];
+                  if (f) handleDesignUpload(f);
+                  e.target.value = '';
+                }}
+              />
+            </div>
+
             {/* Text overlay */}
             <div>
               <h3 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-sm tracking-wide mb-3 flex items-center gap-2">
@@ -280,7 +380,7 @@ export default function Visualizer() {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => { setActiveDesign(null); setTextOverlay(''); setIs3D(false); }}
+                onClick={() => { setActiveDesign(null); setTextOverlay(''); setIs3D(false); setUploadedDesign(null); }}
               >
                 Reset
               </Button>
@@ -295,7 +395,7 @@ export default function Visualizer() {
           <WallPreview height="h-[60vh]" />
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm font-dmsans text-charcoal dark:text-warm-gray">
             <div><span className="font-semibold text-jet-black dark:text-white">Room:</span> {activeRoom.label}</div>
-            <div><span className="font-semibold text-jet-black dark:text-white">Design:</span> {activeDesign?.label || 'None'}</div>
+            <div><span className="font-semibold text-jet-black dark:text-white">Design:</span> {uploadedDesign ? 'Custom Upload' : activeDesign?.label || 'None'}</div>
             <div><span className="font-semibold text-jet-black dark:text-white">3D Effect:</span> {is3D ? 'On' : 'Off'}</div>
             <div><span className="font-semibold text-jet-black dark:text-white">Text:</span> {textOverlay || 'None'}</div>
           </div>
