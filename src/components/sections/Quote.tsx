@@ -165,8 +165,7 @@ export default function Quote() {
             <div className="bg-vivid-red rounded-card shadow-red-glow p-7 flex flex-col gap-5">
               <div>
                 <p className="font-dmsans text-white/80 text-xs uppercase tracking-widest font-semibold mb-1">Premium</p>
-                <p className="font-poppins font-bold text-white text-4xl">$2,300<span className="text-xl font-dmsans font-normal text-white/70">.00</span></p>
-                <p className="font-dmsans text-white/80 text-sm mt-1">per square foot · with white base ink</p>
+
               </div>
               <ul className="space-y-2 flex-1">
                 {[
