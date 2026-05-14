@@ -151,19 +151,64 @@ const [is3D, setIs3D] = useState(false);
         )}
       </AnimatePresence>
 
-      {/* Uploaded design image */}
+      {/* Uploaded design — draggable in main preview, static in fullscreen */}
       <AnimatePresence>
-        {uploadedDesign && (
+        {uploadedDesign && innerRef && (
+          <motion.div
+            key="uploaded-interactive"
+            drag
+            dragConstraints={innerRef}
+            dragElastic={0}
+            dragMomentum={false}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ opacity: { duration: 0.3 } }}
+            style={{
+              x: designMotionX,
+              y: designMotionY,
+              width: designWidth,
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              translateX: '-50%',
+              translateY: '-50%',
+            }}
+            className="cursor-grab active:cursor-grabbing touch-none select-none z-10"
+          >
+            <img
+              src={uploadedDesign}
+              alt="Your design on wall"
+              className="w-full h-auto block pointer-events-none rounded-sm"
+              draggable={false}
+            />
+            <div
+              className="absolute -bottom-2 -right-2 w-5 h-5 bg-vivid-red rounded-full border-2 border-white cursor-se-resize shadow-md"
+              onPointerDown={e => {
+                e.stopPropagation();
+                e.currentTarget.setPointerCapture(e.pointerId);
+                resizeStartRef.current = { x: e.clientX, startWidth: designWidth };
+              }}
+              onPointerMove={e => {
+                if (!resizeStartRef.current) return;
+                const dx = e.clientX - resizeStartRef.current.x;
+                setDesignWidth(Math.max(60, Math.min(600, resizeStartRef.current.startWidth + dx)));
+              }}
+              onPointerUp={() => { resizeStartRef.current = null; }}
+            />
+          </motion.div>
+        )}
+        {uploadedDesign && !innerRef && (
           <motion.img
-            key="uploaded"
+            key="uploaded-static"
             src={uploadedDesign}
             alt="Your design on wall"
             initial={{ opacity: 0 }}
             animate={{ opacity: 0.93 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
+            transition={{ duration: 0.3 }}
             className="absolute inset-0 w-full h-full"
-            style={{ objectFit: fitMode }}
+            style={{ objectFit: 'contain' }}
           />
         )}
       </AnimatePresence>
@@ -256,20 +301,9 @@ const [is3D, setIs3D] = useState(false);
                   >
                     <X size={13} />
                   </button>
-                  <div className="flex gap-1 p-1.5 pt-0">
-                    <button
-                      onClick={() => setFitMode('contain')}
-                      className={`flex-1 text-xs py-1 rounded font-dmsans font-medium transition-colors ${fitMode === 'contain' ? 'bg-vivid-red text-white' : 'bg-smoke dark:bg-charcoal text-charcoal dark:text-warm-gray hover:text-vivid-red'}`}
-                    >
-                      Fit
-                    </button>
-                    <button
-                      onClick={() => setFitMode('cover')}
-                      className={`flex-1 text-xs py-1 rounded font-dmsans font-medium transition-colors ${fitMode === 'cover' ? 'bg-vivid-red text-white' : 'bg-smoke dark:bg-charcoal text-charcoal dark:text-warm-gray hover:text-vivid-red'}`}
-                    >
-                      Fill
-                    </button>
-                  </div>
+                  <p className="text-xs text-warm-gray font-dmsans px-1.5 pb-1.5">
+                    Drag to position · Drag <span className="text-vivid-red font-medium">red corner</span> to resize
+                  </p>
                 </div>
               ) : (
                 <div
@@ -360,7 +394,7 @@ const [is3D, setIs3D] = useState(false);
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => { setTextOverlay(''); setIs3D(false); setUploadedDesign(null); }}
+                onClick={() => { setTextOverlay(''); setIs3D(false); setUploadedDesign(null); setDesignWidth(180); designMotionX.set(0); designMotionY.set(0); }}
               >
                 Reset
               </Button>
