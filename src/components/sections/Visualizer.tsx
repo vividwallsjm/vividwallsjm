@@ -46,49 +46,10 @@ const rooms = [
   },
 ];
 
-const designs = [
-  {
-    id: 'tropical',
-    label: 'Tropical',
-    preview: 'linear-gradient(135deg, #1a6b3a 0%, #2d8a4e 50%, #4aab6a 100%)',
-    pattern: '🌴',
-  },
-  {
-    id: 'geometric',
-    label: 'Geometric',
-    preview: 'linear-gradient(135deg, #1A1A1A 0%, #E02226 50%, #1A1A1A 100%)',
-    pattern: '◆',
-  },
-  {
-    id: 'ocean',
-    label: 'Ocean',
-    preview: 'linear-gradient(135deg, #0a4a7a 0%, #1a8abf 50%, #30b0e0 100%)',
-    pattern: '🌊',
-  },
-  {
-    id: 'sunset',
-    label: 'Sunset',
-    preview: 'linear-gradient(135deg, #7a1a0a 0%, #c43b1a 50%, #e8a030 100%)',
-    pattern: '🌅',
-  },
-  {
-    id: 'abstract',
-    label: 'Abstract',
-    preview: 'linear-gradient(135deg, #4a0a7a 0%, #8a1ab0 50%, #c030e0 100%)',
-    pattern: '✦',
-  },
-  {
-    id: 'stone',
-    label: '3D Stone',
-    preview: 'linear-gradient(135deg, #5a4a3a 0%, #7a6a5a 50%, #9a8a7a 100%)',
-    pattern: '🪨',
-  },
-];
 
 export default function Visualizer() {
   const [activeRoom, setActiveRoom] = useState(rooms[0]);
-  const [activeDesign, setActiveDesign] = useState<typeof designs[0] | null>(null);
-  const [is3D, setIs3D] = useState(false);
+const [is3D, setIs3D] = useState(false);
   const [textOverlay, setTextOverlay] = useState('');
   const [fullscreen, setFullscreen] = useState(false);
   const [uploadedDesign, setUploadedDesign] = useState<string | null>(null);
@@ -142,33 +103,6 @@ export default function Visualizer() {
         )}
       </AnimatePresence>
 
-      {/* Design overlay (hidden when custom design is uploaded) */}
-      <AnimatePresence>
-        {activeDesign && !uploadedDesign && (
-          <motion.div
-            key={activeDesign.id}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.75 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0"
-            style={{ background: activeDesign.preview }}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Pattern symbol (hidden when custom design is uploaded) */}
-      {activeDesign && !uploadedDesign && (
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span
-            className="text-white/30 font-poppins font-bold select-none"
-            style={{ fontSize: '120px', lineHeight: 1 }}
-          >
-            {activeDesign.pattern}
-          </span>
-        </div>
-      )}
-
       {/* Text overlay */}
       {textOverlay && (
         <div className="absolute inset-0 flex items-center justify-center px-6">
@@ -192,9 +126,9 @@ export default function Visualizer() {
       )}
 
       {/* Empty state */}
-      {!activeDesign && !textOverlay && !uploadedDesign && (
+      {!textOverlay && !uploadedDesign && (
         <div className="absolute inset-0 flex items-center justify-center">
-          <p className="text-white/40 font-dmsans text-sm">Select a design or upload your own below</p>
+          <p className="text-white/40 font-dmsans text-sm">Upload your design or add text below</p>
         </div>
       )}
     </div>
@@ -237,33 +171,6 @@ export default function Visualizer() {
                     }`}
                   >
                     {room.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Design picker */}
-            <div>
-              <h3 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-sm tracking-wide mb-3">
-                Design Style
-              </h3>
-              <div className="grid grid-cols-3 gap-2">
-                {designs.map(design => (
-                  <button
-                    key={design.id}
-                    onClick={() => setActiveDesign(prev => prev?.id === design.id ? null : design)}
-                    className={`relative rounded-card overflow-hidden h-16 transition-all duration-200 ${
-                      activeDesign?.id === design.id ? 'ring-2 ring-vivid-red scale-105' : 'hover:scale-102 hover:ring-1 hover:ring-vivid-red/50'
-                    }`}
-                    style={{ background: design.preview }}
-                  >
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-xl">{design.pattern}</span>
-                      <span className="text-white text-xs font-dmsans drop-shadow font-medium">{design.label}</span>
-                    </div>
-                    {activeDesign?.id === design.id && (
-                      <div className="absolute top-1 right-1 w-3 h-3 rounded-full bg-vivid-red border-2 border-white" />
-                    )}
                   </button>
                 ))}
               </div>
@@ -380,7 +287,7 @@ export default function Visualizer() {
               <Button
                 variant="secondary"
                 size="sm"
-                onClick={() => { setActiveDesign(null); setTextOverlay(''); setIs3D(false); setUploadedDesign(null); }}
+                onClick={() => { setTextOverlay(''); setIs3D(false); setUploadedDesign(null); }}
               >
                 Reset
               </Button>
@@ -395,7 +302,7 @@ export default function Visualizer() {
           <WallPreview height="h-[60vh]" />
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm font-dmsans text-charcoal dark:text-warm-gray">
             <div><span className="font-semibold text-jet-black dark:text-white">Room:</span> {activeRoom.label}</div>
-            <div><span className="font-semibold text-jet-black dark:text-white">Design:</span> {uploadedDesign ? 'Custom Upload' : activeDesign?.label || 'None'}</div>
+            <div><span className="font-semibold text-jet-black dark:text-white">Design:</span> {uploadedDesign ? 'Custom Upload' : 'None'}</div>
             <div><span className="font-semibold text-jet-black dark:text-white">3D Effect:</span> {is3D ? 'On' : 'Off'}</div>
             <div><span className="font-semibold text-jet-black dark:text-white">Text:</span> {textOverlay || 'None'}</div>
           </div>
