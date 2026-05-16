@@ -287,7 +287,7 @@ const [is3D, setIs3D] = useState(false);
             </div>
 
             {/* Upload your design */}
-            <div>
+            <div id="upload-design">
               <h3 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-sm tracking-wide mb-3 flex items-center gap-2">
                 <Upload size={14} /> Upload Your Design
               </h3>

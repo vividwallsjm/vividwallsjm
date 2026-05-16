@@ -271,7 +271,7 @@ export default function Quote() {
                 variant="primary"
                 size="lg"
                 fullWidth
-                onClick={() => { setModalOpen(true); setPhase('idle'); }}
+                onClick={() => document.getElementById('upload-design')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 <Camera size={20} /> Upload Photo of Your Wall
               </Button>
