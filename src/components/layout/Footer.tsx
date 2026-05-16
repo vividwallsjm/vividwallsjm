@@ -18,10 +18,10 @@ export default function Footer() {
   };
 
   const inputClass =
-    'w-full bg-charcoal text-white placeholder-warm-gray border border-charcoal rounded-input px-4 py-3 text-sm font-dmsans outline-none focus:border-vivid-red focus:ring-1 focus:ring-vivid-red transition-all';
+    'w-full bg-smoke text-jet-black placeholder-gray-400 border border-warm-gray rounded-input px-4 py-3 text-sm font-dmsans outline-none focus:border-vivid-red focus:ring-1 focus:ring-vivid-red transition-all';
 
   return (
-    <footer className="bg-jet-black border-t-2 border-vivid-red">
+    <footer className="bg-white border-t-2 border-vivid-red">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
 
@@ -37,11 +37,11 @@ export default function Footer() {
                   className="h-12 w-auto object-contain"
                 />
               </div>
-              <p className="text-warm-gray font-dmsans italic mt-1">
+              <p className="text-charcoal font-dmsans italic mt-1">
                 Bold Finishes. Lasting Impressions.
               </p>
             </div>
-            <p className="text-warm-gray text-sm leading-relaxed">
+            <p className="text-charcoal text-sm leading-relaxed">
               Jamaica&apos;s leading Direct-to-Wall UV Printing studio. Transforming homes, offices, hotels, and restaurants across the island with vibrant, permanent, high-resolution murals.
             </p>
 
@@ -55,7 +55,7 @@ export default function Footer() {
               ].map(note => (
                 <div key={note} className="flex items-center gap-2">
                   <div className="w-1.5 h-1.5 rounded-full bg-vivid-red flex-shrink-0" />
-                  <span className="text-warm-gray text-sm">{note}</span>
+                  <span className="text-charcoal text-sm">{note}</span>
                 </div>
               ))}
             </div>
@@ -73,7 +73,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={label}
-                  className="w-10 h-10 rounded-btn border border-charcoal flex items-center justify-center text-vivid-red hover:bg-vivid-red hover:text-white hover:border-vivid-red transition-all duration-200"
+                  className="w-10 h-10 rounded-btn border border-warm-gray flex items-center justify-center text-vivid-red hover:bg-vivid-red hover:text-white hover:border-vivid-red transition-all duration-200"
                 >
                   <Icon size={18} />
                 </a>
@@ -84,7 +84,7 @@ export default function Footer() {
           {/* Column 2 — Service Areas & Contact Info */}
           <div className="space-y-6">
             <div>
-              <h3 className="font-poppins font-bold text-white uppercase tracking-wide text-sm mb-3">
+              <h3 className="font-poppins font-bold text-jet-black uppercase tracking-wide text-sm mb-3">
                 Service Areas
               </h3>
               <div className="grid grid-cols-2 gap-x-4 gap-y-1.5">
@@ -95,35 +95,35 @@ export default function Footer() {
                 ].map(area => (
                   <div key={area} className="flex items-center gap-1.5">
                     <MapPin size={12} className="text-vivid-red flex-shrink-0" />
-                    <span className="text-warm-gray text-sm">{area}</span>
+                    <span className="text-charcoal text-sm">{area}</span>
                   </div>
                 ))}
               </div>
             </div>
 
             <div className="space-y-3 pt-2">
-              <h3 className="font-poppins font-bold text-white uppercase tracking-wide text-sm">
+              <h3 className="font-poppins font-bold text-jet-black uppercase tracking-wide text-sm">
                 Contact
               </h3>
               <p className="font-dmsans text-vivid-red text-xs uppercase tracking-widest font-semibold">Hakeem Bailey</p>
-              <div className="flex items-center gap-3 text-warm-gray text-sm">
+              <div className="flex items-center gap-3 text-charcoal text-sm">
                 <Phone size={16} className="text-vivid-red flex-shrink-0" />
-                <a href="tel:8764142349" className="hover:text-vivid-red transition-colors">876-414-2349</a>
+                <a href="tel:8764142349" className="text-charcoal hover:text-vivid-red transition-colors">876-414-2349</a>
               </div>
-              <div className="flex items-center gap-3 text-warm-gray text-sm">
+              <div className="flex items-center gap-3 text-charcoal text-sm">
                 <MessageCircle size={16} className="text-vivid-red flex-shrink-0" />
-                <a href="https://wa.me/8764142349" target="_blank" rel="noopener noreferrer" className="hover:text-vivid-red transition-colors">WhatsApp: 876-414-2349</a>
+                <a href="https://wa.me/8764142349" target="_blank" rel="noopener noreferrer" className="text-charcoal hover:text-vivid-red transition-colors">WhatsApp: 876-414-2349</a>
               </div>
-              <div className="flex items-center gap-3 text-warm-gray text-sm">
+              <div className="flex items-center gap-3 text-charcoal text-sm">
                 <Mail size={16} className="text-vivid-red flex-shrink-0" />
-                <a href="mailto:vividwallsjm@gmail.com" className="hover:text-vivid-red transition-colors">vividwallsjm@gmail.com</a>
+                <a href="mailto:vividwallsjm@gmail.com" className="text-charcoal hover:text-vivid-red transition-colors">vividwallsjm@gmail.com</a>
               </div>
             </div>
           </div>
 
           {/* Column 3 — Contact Form */}
           <div>
-            <h3 className="font-poppins font-bold text-white uppercase tracking-wide text-sm mb-4">
+            <h3 className="font-poppins font-bold text-jet-black uppercase tracking-wide text-sm mb-4">
               Send a Message
             </h3>
             <form onSubmit={handleSubmit} className="space-y-3">
@@ -156,8 +156,8 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-charcoal mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-warm-gray text-sm">
+        <div className="border-t border-warm-gray mt-12 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-charcoal text-sm">
             © {new Date().getFullYear()} Vivid Walls Jamaica. All rights reserved.
           </p>
           <div className="flex gap-4">
@@ -165,7 +165,7 @@ export default function Footer() {
               <a
                 key={link}
                 href="#"
-                className="text-warm-gray text-sm hover:text-vivid-red transition-colors"
+                className="text-charcoal text-sm hover:text-vivid-red transition-colors"
               >
                 {link}
               </a>
