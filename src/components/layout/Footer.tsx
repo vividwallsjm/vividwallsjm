@@ -32,9 +32,9 @@ export default function Footer() {
                 <Image
                   src="/logo-transparent.jpg"
                   alt="Vivid Walls"
-                  width={160}
-                  height={54}
-                  className="h-12 w-auto object-contain"
+                  width={320}
+                  height={108}
+                  className="h-24 w-auto object-contain"
                 />
               </div>
               <p className="text-charcoal font-dmsans italic mt-1">
