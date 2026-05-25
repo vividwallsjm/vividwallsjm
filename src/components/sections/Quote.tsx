@@ -211,8 +211,8 @@ export default function Quote() {
                       </button>
                     )}
                   </div>
-                  {sliderRow('Mural Height', p.height, 1, 30, 1, ' ft', v => updatePrint(i, 'height', v))}
-                  {sliderRow('Mural Length', p.length, 1, 100, 1, ' ft', v => updatePrint(i, 'length', v))}
+                  {sliderRow('Mural Height', p.height, 3, 30, 1, ' ft', v => updatePrint(i, 'height', v))}
+                  {sliderRow('Mural Length', p.length, 3, 100, 1, ' ft', v => updatePrint(i, 'length', v))}
                   {sliderRow('Number of Walls', p.walls, 1, 5, 1, '', v => updatePrint(i, 'walls', v))}
                   {i < prints.length - 1 && <div className="border-t border-warm-gray/30 dark:border-charcoal" />}
                 </div>
