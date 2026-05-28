@@ -49,7 +49,7 @@ export default function Navbar() {
             onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           >
             <Image
-              src="/logo.jpeg"
+              src="/logo-header-transparent.jpg"
               alt="Vivid Walls"
               width={120}
               height={40}

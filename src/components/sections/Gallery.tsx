@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MapPin, Maximize } from 'lucide-react';
+import { Maximize } from 'lucide-react';
+import Image from 'next/image';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Modal from '@/components/ui/Modal';
 import { galleryProjects, categories, GalleryCategory, GalleryProject } from '@/data/gallery';
@@ -67,50 +68,18 @@ export default function Gallery() {
                 className="group cursor-pointer rounded-card overflow-hidden shadow-card hover:shadow-card-hover border border-warm-gray dark:border-charcoal hover:border-vivid-red transition-all duration-300"
               >
                 {/* Thumbnail */}
-                <div
-                  className="relative h-52 overflow-hidden"
-                  style={{ background: `linear-gradient(135deg, ${project.colors[0]} 0%, ${project.colors[1]} 100%)` }}
-                >
-                  {/* Pattern overlay */}
-                  <div
-                    className="absolute inset-0 opacity-10"
-                    style={{
-                      backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 20px)',
-                    }}
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.name}
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
-                  {/* Category badge */}
-                  <div className="absolute top-3 left-3">
-                    <span className="bg-vivid-red text-white text-xs font-poppins font-bold px-2 py-1 rounded-btn uppercase tracking-wider">
-                      {project.category}
-                    </span>
-                  </div>
                   {/* Hover overlay */}
                   <div className="absolute inset-0 bg-jet-black/0 group-hover:bg-jet-black/40 transition-all duration-300 flex items-center justify-center">
                     <Maximize size={32} className="text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </div>
-                  {/* Size badge */}
-                  <div className="absolute bottom-3 right-3">
-                    <span
-                      className="text-white/60 text-xs font-dmsans px-2 py-1 rounded"
-                      style={{ background: 'rgba(0,0,0,0.4)' }}
-                    >
-                      {project.size}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Card body */}
-                <div className="p-4 bg-white dark:bg-charcoal">
-                  <h3 className="font-poppins font-bold text-jet-black dark:text-white text-sm uppercase tracking-wide leading-snug mb-1 group-hover:text-vivid-red transition-colors">
-                    {project.name}
-                  </h3>
-                  <div className="flex items-center gap-1.5 text-charcoal dark:text-warm-gray text-xs">
-                    <MapPin size={12} className="text-vivid-red flex-shrink-0" />
-                    <span>{project.location}</span>
-                  </div>
-                  <p className="font-dmsans text-charcoal dark:text-warm-gray text-xs mt-2 leading-relaxed line-clamp-2">
-                    {project.story}
-                  </p>
                 </div>
               </motion.div>
             ))}
@@ -134,24 +103,14 @@ export default function Gallery() {
         {selected && (
           <div>
             {/* Hero thumbnail */}
-            <div
-              className="h-56 md:h-72 relative"
-              style={{ background: `linear-gradient(135deg, ${selected.colors[0]} 0%, ${selected.colors[1]} 100%)` }}
-            >
-              <div
-                className="absolute inset-0 opacity-10"
-                style={{
-                  backgroundImage: 'repeating-linear-gradient(45deg, rgba(255,255,255,0.3) 0px, rgba(255,255,255,0.3) 2px, transparent 2px, transparent 20px)',
-                }}
+            <div className="h-56 md:h-72 relative overflow-hidden">
+              <Image
+                src={selected.image}
+                alt={selected.name}
+                fill
+                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 768px"
               />
-              <div className="absolute inset-0 flex items-end p-6">
-                <span
-                  className="text-white font-poppins font-bold text-4xl uppercase opacity-20"
-                  style={{ lineHeight: 1 }}
-                >
-                  {selected.category}
-                </span>
-              </div>
             </div>
 
             {/* Details */}
