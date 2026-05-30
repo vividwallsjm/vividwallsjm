@@ -43,17 +43,17 @@ const item = {
 
 export default function Audience() {
   return (
-    <section id="audience" className="section-padding bg-jet-black">
+    <section id="audience" className="section-padding bg-smoke dark:bg-jet-black">
       <div className="container-max">
         <div className="mb-14 max-w-2xl">
           <p className="font-dmsans text-vivid-red text-sm font-semibold uppercase tracking-widest mb-2">
             Who It&apos;s For
           </p>
-          <h2 className="font-poppins font-bold text-white uppercase text-4xl md:text-5xl leading-tight">
+          <h2 className="font-poppins font-bold text-jet-black dark:text-white uppercase text-4xl md:text-5xl leading-tight">
             BUILT FOR<br />EVERY SPACE
           </h2>
           <SectionDivider />
-          <p className="font-dmsans text-warm-gray text-lg leading-relaxed">
+          <p className="font-dmsans text-charcoal dark:text-warm-gray text-lg leading-relaxed">
             Whether it&apos;s a home, a business, or a once-in-a-lifetime event — we bring the same precision and quality to every project.
           </p>
         </div>
@@ -69,7 +69,7 @@ export default function Audience() {
             <motion.div
               key={i}
               variants={item}
-              className="group bg-charcoal rounded-card border border-charcoal hover:border-vivid-red transition-colors duration-200 p-7 flex flex-col gap-4"
+              className="group bg-white dark:bg-charcoal rounded-card border border-warm-gray dark:border-charcoal hover:border-vivid-red transition-colors duration-200 p-7 flex flex-col gap-4"
             >
               <div className="w-12 h-12 rounded-card bg-vivid-red/10 flex items-center justify-center group-hover:bg-vivid-red transition-colors duration-200">
                 <Icon size={22} className="text-vivid-red group-hover:text-white transition-colors duration-200" />
@@ -78,10 +78,10 @@ export default function Audience() {
                 <span className="font-dmsans text-vivid-red text-xs uppercase tracking-widest font-semibold">
                   {label}
                 </span>
-                <h3 className="font-poppins font-bold text-white text-sm uppercase tracking-wide mt-1 mb-2 leading-snug">
+                <h3 className="font-poppins font-bold text-jet-black dark:text-white text-sm uppercase tracking-wide mt-1 mb-2 leading-snug">
                   {title}
                 </h3>
-                <p className="font-dmsans text-warm-gray text-sm leading-relaxed">
+                <p className="font-dmsans text-charcoal dark:text-warm-gray text-sm leading-relaxed">
                   {desc}
                 </p>
               </div>

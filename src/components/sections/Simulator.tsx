@@ -84,15 +84,15 @@ export default function Simulator() {
   const WallVisual = () => {
     if (currentStage < 0) {
       return (
-        <div className="w-full h-full flex items-center justify-center bg-warm-gray rounded-card">
-          <p className="font-dmsans text-charcoal text-sm opacity-60">Click &quot;Start Simulation&quot; to begin</p>
+        <div className="w-full h-full flex items-center justify-center bg-warm-gray dark:bg-charcoal rounded-card">
+          <p className="font-dmsans text-charcoal dark:text-warm-gray text-sm opacity-60">Click &quot;Start Simulation&quot; to begin</p>
         </div>
       );
     }
     if (currentStage === 0 && !completed.includes(0)) {
       return (
-        <div className="relative w-full h-full bg-warm-gray rounded-card overflow-hidden">
-          <p className="absolute top-3 left-3 text-charcoal text-xs font-dmsans opacity-60">Blank wall — preparation in progress</p>
+        <div className="relative w-full h-full bg-warm-gray dark:bg-charcoal rounded-card overflow-hidden">
+          <p className="absolute top-3 left-3 text-charcoal dark:text-warm-gray text-xs font-dmsans opacity-60">Blank wall — preparation in progress</p>
           <motion.div
             className="absolute top-1/2 -translate-y-1/2 w-16 h-6 bg-vivid-red/70 rounded"
             animate={{ x: ['-100%', '800%'] }}
@@ -104,7 +104,7 @@ export default function Simulator() {
     }
     if (currentStage === 1 && !completed.includes(1)) {
       return (
-        <div className="relative w-full h-full bg-warm-gray rounded-card overflow-hidden">
+        <div className="relative w-full h-full bg-warm-gray dark:bg-charcoal rounded-card overflow-hidden">
           {/* Printing bands */}
           <motion.div
             className="absolute inset-y-0 left-0 bg-gradient-to-r from-deep-red via-vivid-red to-warm-gray"

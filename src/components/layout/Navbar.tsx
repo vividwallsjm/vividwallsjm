@@ -36,24 +36,24 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-jet-black border-b border-warm-gray dark:border-charcoal transition-shadow duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#000000] border-b border-warm-gray dark:border-charcoal transition-shadow duration-300 ${
         scrolled ? 'shadow-[0_4px_24px_rgba(0,0,0,0.12)]' : ''
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          {/* Logo — sits directly on white navbar, no pill needed */}
+          {/* Logo */}
           <a
             href="#"
             className="flex items-center"
             onClick={e => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
           >
             <Image
-              src="/logo-header-transparent.jpg"
+              src="/logo-transparent.jpg"
               alt="Vivid Walls"
-              width={120}
-              height={40}
-              className="h-10 w-auto object-contain"
+              width={138}
+              height={46}
+              className="h-[46px] w-auto object-contain dark:invert dark:hue-rotate-180"
               priority
             />
           </a>
@@ -83,7 +83,7 @@ export default function Navbar() {
               className="p-2 rounded-btn text-jet-black dark:text-warm-gray hover:text-vivid-red dark:hover:text-white transition-colors"
               aria-label="Toggle dark mode"
             >
-              {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+              {theme === 'dark' ? <Moon size={18} /> : <Sun size={18} />}
             </button>
 
             {/* CTA — desktop */}
@@ -117,7 +117,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden overflow-hidden bg-white dark:bg-jet-black border-t border-warm-gray dark:border-charcoal"
+            className="md:hidden overflow-hidden bg-white dark:bg-[#000000] border-t border-warm-gray dark:border-charcoal"
           >
             <div className="px-4 py-4 flex flex-col gap-3">
               {navLinks.map(link => (
