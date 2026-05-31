@@ -23,6 +23,10 @@ export const metadata: Metadata = {
   description:
     'Jamaica\'s premier Direct-to-Wall UV Printing studio. Photo-realistic murals, 3D embossed feature walls, and vibrant brand graphics printed directly on any surface across Kingston and island-wide.',
   keywords: ['UV wall printing Jamaica', 'mural printing Kingston', '3D wall printing Jamaica', 'Vivid Walls'],
+  icons: {
+    icon: '/logo-transparent.jpg',
+    apple: '/logo-transparent.jpg',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
