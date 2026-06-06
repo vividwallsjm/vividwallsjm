@@ -3,14 +3,9 @@
 import { motion } from 'framer-motion';
 
 export default function WhatsAppButton() {
-  // CUSTOMIZATION POINT: Replace with your real WhatsApp number
-  const whatsappNumber = '18765550192';
-  const message = encodeURIComponent('Hi! I\'m interested in UV wall printing for my space. Can you help?');
-  const href = `https://wa.me/${whatsappNumber}?text=${message}`;
-
   return (
     <motion.a
-      href={href}
+      href="https://wa.me/message/3TDDNRG2UZ44B1"
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"

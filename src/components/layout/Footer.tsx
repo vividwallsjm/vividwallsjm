@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { Instagram, Facebook, MessageCircle, MapPin, Phone, Mail } from 'lucide-react';
 import Button from '@/components/ui/Button';
 import { useToast } from '@/context/ToastContext';
@@ -161,14 +162,17 @@ export default function Footer() {
             © {new Date().getFullYear()} Vivid Walls Jamaica. All rights reserved.
           </p>
           <div className="flex gap-4">
-            {['Privacy Policy', 'Terms of Service'].map(link => (
-              <a
-                key={link}
-                href="#"
+            {[
+              { label: 'Privacy Policy', href: '/legal#privacy' },
+              { label: 'Terms of Service', href: '/legal#terms' },
+            ].map(({ label, href }) => (
+              <Link
+                key={label}
+                href={href}
                 className="text-charcoal dark:text-warm-gray text-sm hover:text-vivid-red transition-colors"
               >
-                {link}
-              </a>
+                {label}
+              </Link>
             ))}
           </div>
         </div>
