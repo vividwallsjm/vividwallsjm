@@ -26,11 +26,9 @@ export const galleryProjects: GalleryProject[] = [
   { id: 7,  name: 'Tile 7',  category: 'Hotel',       image: '/tile-photos/tile-7.jpg',  location: 'Ocho Rios', size: '', material: '', story: '', colors: ['#1a4a1a', '#3a7a3a'], accent: '#90e090' },
   { id: 8,  name: 'Tile 8',  category: 'Hotel',       image: '/tile-photos/tile-8.jpg',  location: 'Negril', size: '', material: '', story: '', colors: ['#4a2a0a', '#9a6a2a'], accent: '#e0c080' },
   // Restaurant — 2 tiles
-  { id: 9,  name: 'Tile 9',  category: 'Restaurant',  image: '/tile-photos/tile-9.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#7a1a0a', '#c43b1a'], accent: '#f0a070' },
   { id: 10, name: 'Tile 10', category: 'Restaurant',  image: '/tile-photos/tile-10.jpg', location: 'Kingston', size: '', material: '', story: '', colors: ['#7a2a0a', '#e05a1a'], accent: '#f0b060' },
   // Signage — 2 tiles
   { id: 11, name: 'Tile 11', category: 'Signage',     image: '/tile-photos/tile-11.jpg', location: 'Kingston', size: '', material: '', story: '', colors: ['#1A1A1A', '#8C1518'], accent: '#E02226' },
-  { id: 12, name: 'Tile 12', category: 'Signage',     image: '/tile-photos/tile-12.png', location: 'Kingston', size: '', material: '', story: '', colors: ['#0a1a3a', '#1a3a7a'], accent: '#60a0e0' },
 ];
 
 export const categories: GalleryCategory[] = ['All', 'Residential', 'Commercial', 'Hotel', 'Restaurant', 'Signage'];
