@@ -68,12 +68,12 @@ export default function Gallery() {
                 className="group cursor-pointer rounded-card overflow-hidden shadow-card hover:shadow-card-hover border border-warm-gray dark:border-charcoal hover:border-vivid-red transition-all duration-300"
               >
                 {/* Thumbnail */}
-                <div className="relative h-64 overflow-hidden">
+                <div className="relative h-72 overflow-hidden bg-smoke dark:bg-charcoal">
                   <Image
                     src={project.image}
                     alt={project.name}
                     fill
-                    className="object-cover"
+                    className="object-contain"
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   />
                   {/* Hover overlay */}
@@ -103,12 +103,12 @@ export default function Gallery() {
         {selected && (
           <div>
             {/* Hero thumbnail */}
-            <div className="h-56 md:h-72 relative overflow-hidden">
+            <div className="h-56 md:h-96 relative overflow-hidden bg-smoke dark:bg-charcoal">
               <Image
                 src={selected.image}
                 alt={selected.name}
                 fill
-                className="object-cover"
+                className="object-contain"
                 sizes="(max-width: 768px) 100vw, 768px"
               />
             </div>
