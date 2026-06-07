@@ -14,10 +14,9 @@ export interface GalleryProject {
 }
 
 export const galleryProjects: GalleryProject[] = [
-  // Residential — 3 tiles
+  // Residential — 2 tiles
   { id: 1,  name: 'Tile 1',  category: 'Residential', image: '/tile-photos/tile-1.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#1a4a2e', '#2d7a4a'], accent: '#a8e6c1' },
   { id: 2,  name: 'Tile 2',  category: 'Residential', image: '/tile-photos/tile-2.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#7a3a0a', '#c47a2a'], accent: '#f0d070' },
-  { id: 3,  name: 'Tile 3',  category: 'Residential', image: '/tile-photos/tile-3.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#5a4a3a', '#8a7a6a'], accent: '#d0c0b0' },
   // Commercial — 2 tiles
   { id: 4,  name: 'Tile 4',  category: 'Commercial',  image: '/tile-photos/tile-4.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#1A1A1A', '#2D2D2D'], accent: '#E02226' },
   { id: 5,  name: 'Tile 5',  category: 'Commercial',  image: '/tile-photos/tile-5.jpg',  location: 'Kingston', size: '', material: '', story: '', colors: ['#1A1A1A', '#3a3a5a'], accent: '#aaaaff' },
