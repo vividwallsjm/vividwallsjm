@@ -76,6 +76,16 @@ const [is3D, setIs3D] = useState(false);
   const previewRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const resizeStartRef = useRef<{ x: number; startWidth: number } | null>(null);
+  const designElRef = useRef<HTMLDivElement>(null);
+  const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
+  const gestureRef = useRef<{
+    startDist: number;
+    startWidth: number;
+    startCx: number;
+    startCy: number;
+    startX: number;
+    startY: number;
+  } | null>(null);
 
   const handleDesignUpload = useCallback((file: File) => {
     if (!file.type.startsWith('image/')) return;
@@ -120,6 +130,68 @@ const [is3D, setIs3D] = useState(false);
     }
   };
 
+  // Keep the design clamped inside the preview box.
+  const clampPosition = useCallback(() => {
+    const container = previewRef.current;
+    const el = designElRef.current;
+    if (!container || !el) return;
+    const c = container.getBoundingClientRect();
+    const e = el.getBoundingClientRect();
+    const limitX = Math.max(0, (c.width - e.width) / 2);
+    const limitY = Math.max(0, (c.height - e.height) / 2);
+    designMotionX.set(Math.max(-limitX, Math.min(limitX, designMotionX.get())));
+    designMotionY.set(Math.max(-limitY, Math.min(limitY, designMotionY.get())));
+  }, [designMotionX, designMotionY]);
+
+  // Unified pointer gestures: 1 finger = move, 2 fingers = pinch-resize + pan.
+  const handleDesignPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointersRef.current.size === 2) {
+      const [a, b] = Array.from(pointersRef.current.values());
+      gestureRef.current = {
+        startDist: Math.hypot(a.x - b.x, a.y - b.y),
+        startWidth: designWidth,
+        startCx: (a.x + b.x) / 2,
+        startCy: (a.y + b.y) / 2,
+        startX: designMotionX.get(),
+        startY: designMotionY.get(),
+      };
+    }
+  };
+
+  const handleDesignPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    const prev = pointersRef.current.get(e.pointerId);
+    if (!prev) return;
+    const dx = e.clientX - prev.x;
+    const dy = e.clientY - prev.y;
+    pointersRef.current.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+    const gesture = gestureRef.current;
+    if (pointersRef.current.size >= 2 && gesture) {
+      const [a, b] = Array.from(pointersRef.current.values());
+      const dist = Math.hypot(a.x - b.x, a.y - b.y);
+      const cx = (a.x + b.x) / 2;
+      const cy = (a.y + b.y) / 2;
+      const maxFill = previewRef.current?.getBoundingClientRect().width ?? 600;
+      setDesignWidth(Math.max(60, Math.min(maxFill, gesture.startWidth * (dist / gesture.startDist))));
+      designMotionX.set(gesture.startX + (cx - gesture.startCx));
+      designMotionY.set(gesture.startY + (cy - gesture.startCy));
+      clampPosition();
+      return;
+    }
+
+    designMotionX.set(designMotionX.get() + dx);
+    designMotionY.set(designMotionY.get() + dy);
+    clampPosition();
+  };
+
+  const handleDesignPointerUp = (e: React.PointerEvent<HTMLDivElement>) => {
+    pointersRef.current.delete(e.pointerId);
+    if (pointersRef.current.size < 2) gestureRef.current = null;
+    clampPosition();
+  };
+
   const wallStyle = {
     background: activeRoom.photo ? 'transparent' : activeRoom.bg,
     ...(is3D && {
@@ -156,10 +228,11 @@ const [is3D, setIs3D] = useState(false);
         {uploadedDesign && innerRef && (
           <motion.div
             key="uploaded-interactive"
-            drag
-            dragConstraints={innerRef}
-            dragElastic={0}
-            dragMomentum={false}
+            ref={designElRef}
+            onPointerDown={handleDesignPointerDown}
+            onPointerMove={handleDesignPointerMove}
+            onPointerUp={handleDesignPointerUp}
+            onPointerCancel={handleDesignPointerUp}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -183,7 +256,8 @@ const [is3D, setIs3D] = useState(false);
               draggable={false}
             />
             <div
-              className="absolute -bottom-2 -right-2 w-5 h-5 bg-vivid-red rounded-full border-2 border-white cursor-se-resize shadow-md"
+              className="absolute -bottom-2.5 -right-2.5 w-6 h-6 bg-vivid-red rounded-full border-2 border-white cursor-se-resize shadow-md"
+              style={{ touchAction: 'none' }}
               onPointerDown={e => {
                 e.stopPropagation();
                 e.currentTarget.setPointerCapture(e.pointerId);
@@ -191,10 +265,12 @@ const [is3D, setIs3D] = useState(false);
               }}
               onPointerMove={e => {
                 if (!resizeStartRef.current) return;
+                e.stopPropagation();
                 const dx = e.clientX - resizeStartRef.current.x;
-                setDesignWidth(Math.max(60, Math.min(600, resizeStartRef.current.startWidth + dx)));
+                const maxFill = previewRef.current?.getBoundingClientRect().width ?? 600;
+                setDesignWidth(Math.max(60, Math.min(maxFill, resizeStartRef.current.startWidth + dx)));
               }}
-              onPointerUp={() => { resizeStartRef.current = null; }}
+              onPointerUp={e => { e.stopPropagation(); resizeStartRef.current = null; }}
             />
           </motion.div>
         )}
@@ -302,7 +378,7 @@ const [is3D, setIs3D] = useState(false);
                     <X size={13} />
                   </button>
                   <p className="text-xs text-warm-gray font-dmsans px-1.5 pb-1.5">
-                    Drag to position · Drag <span className="text-vivid-red font-medium">red corner</span> to resize
+                    Drag to move · Pinch or drag the <span className="text-vivid-red font-medium">red corner</span> to resize
                   </p>
                 </div>
               ) : (
