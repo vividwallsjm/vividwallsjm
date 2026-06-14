@@ -36,7 +36,7 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 bg-white dark:bg-[#000000] border-b border-warm-gray dark:border-charcoal transition-shadow duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-50 pt-[env(safe-area-inset-top)] bg-white dark:bg-[#000000] border-b border-warm-gray dark:border-charcoal transition-shadow duration-300 ${
         scrolled ? 'shadow-[0_4px_24px_rgba(0,0,0,0.12)]' : ''
       }`}
     >

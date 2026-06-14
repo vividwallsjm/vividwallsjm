@@ -74,8 +74,8 @@ export default function ChatWidget() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.85, y: 20 }}
             transition={{ duration: 0.25, ease: 'easeOut' }}
-            className="fixed bottom-24 right-4 z-[998] w-[calc(100vw-2rem)] sm:w-96 flex flex-col rounded-card shadow-2xl overflow-hidden"
-            style={{ maxHeight: '75vh' }}
+            className="fixed bottom-[calc(6rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[998] w-[calc(100vw-2rem)] sm:w-96 flex flex-col rounded-card shadow-2xl overflow-hidden"
+            style={{ maxHeight: '75dvh' }}
           >
             {/* Header */}
             <div className="bg-jet-black px-4 py-3 flex items-center gap-3 flex-shrink-0">
@@ -184,7 +184,7 @@ export default function ChatWidget() {
       {/* Floating button */}
       <motion.button
         onClick={() => setOpen(prev => !prev)}
-        className="fixed bottom-6 right-4 z-[999] w-14 h-14 rounded-full bg-vivid-red hover:bg-dark-red flex items-center justify-center shadow-red-glow transition-all duration-200"
+        className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[999] w-14 h-14 rounded-full bg-vivid-red hover:bg-dark-red flex items-center justify-center shadow-red-glow transition-all duration-200"
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         aria-label="Open chat"

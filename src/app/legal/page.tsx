@@ -42,7 +42,7 @@ const Disclaimer = () => (
 
 export default function LegalPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-[#000000]">
+    <div className="min-h-screen min-h-[100svh] bg-white dark:bg-[#000000]">
       {/* Header */}
       <header className="border-b-2 border-vivid-red bg-white dark:bg-[#000000] sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">

@@ -9,7 +9,7 @@ export default function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Chat on WhatsApp"
-      className="fixed bottom-6 right-4 z-[999] w-14 h-14 rounded-full flex items-center justify-center"
+      className="fixed bottom-[calc(1.5rem+env(safe-area-inset-bottom))] right-[calc(1rem+env(safe-area-inset-right))] z-[999] w-14 h-14 rounded-full flex items-center justify-center"
       style={{
         background: '#25D366',
         boxShadow: '0 0 0 0 rgba(37,211,102,0.5)',

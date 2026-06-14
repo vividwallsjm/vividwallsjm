@@ -5,6 +5,19 @@
 @layer base {
   html {
     scroll-behavior: smooth;
+    /* Anchor / scrollIntoView jumps land below the fixed navbar (h-16 + safe area) */
+    scroll-padding-top: 5rem;
+    /* Stop Samsung/Android from auto-inflating text and reflowing the layout */
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    /* Consistent tap feedback — no grey flash on Android, matches iOS */
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
   }
 
   body {

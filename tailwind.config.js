@@ -1,10 +1,15 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
+  // Only apply hover: styles on devices that actually support hover (mouse/trackpad).
+  // Prevents hover states from "sticking" after a tap on Samsung/Android touchscreens.
+  future: {
+    hoverOnlyWhenSupported: true,
+  },
   content: [
-    './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    // Scan all of src — the previous globs missed src/context, so classes used
+    // only there (e.g. the toast's safe-area inset) were purged from the build.
+    './src/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {

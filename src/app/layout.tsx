@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Poppins, DM_Sans } from 'next/font/google';
 import './globals.css';
 import { ThemeProvider } from '@/context/ThemeContext';
@@ -27,6 +27,15 @@ export const metadata: Metadata = {
     icon: '/logo-transparent.jpg',
     apple: '/logo-transparent.jpg',
   },
+};
+
+// viewport-fit=cover lets env(safe-area-inset-*) resolve so fixed elements clear
+// the iOS notch / home indicator and Android gesture bar consistently.
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+  themeColor: '#1A1A1A',
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

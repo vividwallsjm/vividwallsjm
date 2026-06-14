@@ -487,7 +487,7 @@ const [is3D, setIs3D] = useState(false);
       {/* Fullscreen modal */}
       <Modal open={fullscreen} onClose={() => setFullscreen(false)} title="WALL PREVIEW — FULLSCREEN">
         <div className="p-6">
-          <WallPreview height="h-[60vh]" />
+          <WallPreview height="h-[60svh]" />
           <div className="mt-4 grid grid-cols-2 gap-3 text-sm font-dmsans text-charcoal dark:text-warm-gray">
             <div><span className="font-semibold text-jet-black dark:text-white">Room:</span> {activeRoom.label}</div>
             <div><span className="font-semibold text-jet-black dark:text-white">Design:</span> {uploadedDesign ? 'Custom Upload' : 'None'}</div>

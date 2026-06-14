@@ -68,7 +68,7 @@ export default function Modal({ open, onClose, title, children, maxWidth = 'max-
             <div className="h-[2px] bg-vivid-red" />
 
             {/* Body */}
-            <div className="overflow-y-auto max-h-[80vh]">
+            <div className="overflow-y-auto max-h-[80dvh]">
               {children}
             </div>
           </motion.div>
