@@ -2,7 +2,7 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { motion, AnimatePresence, useMotionValue } from 'framer-motion';
-import { Maximize2, Layers, Type, Upload, X, Mail } from 'lucide-react';
+import { Maximize2, Layers, Type, Upload, X, Mail, ArrowUpLeft, ArrowUpRight, ArrowDownLeft, ArrowDownRight } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import SectionDivider from '@/components/ui/SectionDivider';
 import Button from '@/components/ui/Button';
@@ -75,7 +75,7 @@ const [is3D, setIs3D] = useState(false);
   const designMotionY = useMotionValue(0);
   const previewRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const resizeStartRef = useRef<{ x: number; startWidth: number } | null>(null);
+  const resizeStartRef = useRef<{ cx: number; cy: number; startDist: number; startWidth: number } | null>(null);
   const designElRef = useRef<HTMLDivElement>(null);
   const pointersRef = useRef<Map<number, { x: number; y: number }>>(new Map());
   const gestureRef = useRef<{
@@ -255,23 +255,45 @@ const [is3D, setIs3D] = useState(false);
               className="w-full h-auto block pointer-events-none rounded-sm"
               draggable={false}
             />
-            <div
-              className="absolute -bottom-2.5 -right-2.5 w-6 h-6 bg-vivid-red rounded-full border-2 border-white cursor-se-resize shadow-md"
-              style={{ touchAction: 'none' }}
-              onPointerDown={e => {
-                e.stopPropagation();
-                e.currentTarget.setPointerCapture(e.pointerId);
-                resizeStartRef.current = { x: e.clientX, startWidth: designWidth };
-              }}
-              onPointerMove={e => {
-                if (!resizeStartRef.current) return;
-                e.stopPropagation();
-                const dx = e.clientX - resizeStartRef.current.x;
-                const maxFill = previewRef.current?.getBoundingClientRect().width ?? 600;
-                setDesignWidth(Math.max(60, Math.min(maxFill, resizeStartRef.current.startWidth + dx)));
-              }}
-              onPointerUp={e => { e.stopPropagation(); resizeStartRef.current = null; }}
-            />
+            {([
+              { pos: '-top-2.5 -left-2.5', cursor: 'cursor-nwse-resize', Icon: ArrowUpLeft },
+              { pos: '-top-2.5 -right-2.5', cursor: 'cursor-nesw-resize', Icon: ArrowUpRight },
+              { pos: '-bottom-2.5 -left-2.5', cursor: 'cursor-nesw-resize', Icon: ArrowDownLeft },
+              { pos: '-bottom-2.5 -right-2.5', cursor: 'cursor-nwse-resize', Icon: ArrowDownRight },
+            ] as const).map(({ pos, cursor, Icon }) => (
+              <div
+                key={pos}
+                className={`absolute ${pos} ${cursor} w-6 h-6 bg-vivid-red rounded-full border-2 border-white shadow-md flex items-center justify-center`}
+                style={{ touchAction: 'none' }}
+                onPointerDown={e => {
+                  e.stopPropagation();
+                  e.currentTarget.setPointerCapture(e.pointerId);
+                  const rect = designElRef.current?.getBoundingClientRect();
+                  if (!rect) return;
+                  const cx = rect.left + rect.width / 2;
+                  const cy = rect.top + rect.height / 2;
+                  resizeStartRef.current = {
+                    cx,
+                    cy,
+                    startDist: Math.hypot(e.clientX - cx, e.clientY - cy),
+                    startWidth: designWidth,
+                  };
+                }}
+                onPointerMove={e => {
+                  const start = resizeStartRef.current;
+                  if (!start) return;
+                  e.stopPropagation();
+                  const dist = Math.hypot(e.clientX - start.cx, e.clientY - start.cy);
+                  const maxFill = previewRef.current?.getBoundingClientRect().width ?? 600;
+                  setDesignWidth(Math.max(60, Math.min(maxFill, start.startWidth * (dist / start.startDist))));
+                  clampPosition();
+                }}
+                onPointerUp={e => { e.stopPropagation(); resizeStartRef.current = null; }}
+                onPointerCancel={e => { e.stopPropagation(); resizeStartRef.current = null; }}
+              >
+                <Icon size={13} className="text-white pointer-events-none" strokeWidth={2.5} />
+              </div>
+            ))}
           </motion.div>
         )}
         {uploadedDesign && !innerRef && (
@@ -378,7 +400,7 @@ const [is3D, setIs3D] = useState(false);
                     <X size={13} />
                   </button>
                   <p className="text-xs text-warm-gray font-dmsans px-1.5 pb-1.5">
-                    Drag to move · Pinch or drag the <span className="text-vivid-red font-medium">red corner</span> to resize
+                    Drag to move · Pinch or drag <span className="text-vivid-red font-medium">any corner</span> to resize
                   </p>
                 </div>
               ) : (
