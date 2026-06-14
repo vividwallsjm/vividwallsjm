@@ -5,8 +5,8 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    /* Anchor / scrollIntoView jumps land below the fixed navbar (h-16 + safe area) */
-    scroll-padding-top: 5rem;
+    /* Anchor / scrollIntoView jumps land below the fixed navbar (h-24 + safe area) */
+    scroll-padding-top: 6.5rem;
     /* Stop Samsung/Android from auto-inflating text and reflowing the layout */
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
